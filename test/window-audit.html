@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>窗景校核 · 7-2903</title>
+<style>
+  body { font: 13px/1.65 "Microsoft YaHei", system-ui, sans-serif; margin: 28px 40px; color: #2b2b28; background: #fbfaf7; }
+  h1 { font-size: 17px; margin: 0 0 4px; }
+  .sub { color: #8a8a82; font-size: 12px; margin-bottom: 20px; }
+  table { border-collapse: collapse; width: 100%; max-width: 980px; font-size: 12px; }
+  th, td { border-bottom: 1px solid #e6e4dd; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f2f0ea; font-weight: 600; color: #55544e; font-size: 11px; letter-spacing: .04em; }
+  tr.hl td { background: #fdf3ed; }
+  td.n { font-variant-numeric: tabular-nums; color: #444; }
+  .tag { display: inline-block; padding: 0 5px; border-radius: 3px; font-size: 10.5px; }
+  .s { background: #e3eef3; color: #2d5670; }
+  .n2 { background: #eceae2; color: #6b6a62; }
+  .w { background: #f0e9e0; color: #8a6a45; }
+  .note { margin-top: 18px; padding: 12px 14px; background: #fff; border: 1px solid #e6e4dd; border-radius: 8px; max-width: 950px; font-size: 12px; color: #55544e; }
+  .note b { color: #b4694a; }
+  #err { color: #b00; font-weight: 600; }
+</style>
+</head>
+<body>
+<h1>7-2903 · 窗洞—外景校核表</h1>
+<p class="sub">由 <code>js/plan.js</code> 的窗洞几何 + <code>js/site.js</code> 的楼栋朝向东自动生成。数值单位 m / 度。</p>
+<div id="out">正在计算…</div>
+<div class="note">
+  <b>这张表是自检工具，不是渲染结果。</b>
+  它回答一个问题：<em>每一扇窗，究竟朝哪个方位、外面是什么</em>。
+  03 户是中间户，北面是公共连廊 —— 所以北窗的"景"就是连廊本身，这一点必须在模型里如实呈现，不能偷偷换成别的。
+</div>
+
+<script src="../lib/three.min.js"></script>
+<script src="../js/materials.js"></script>
+<script src="../js/furniture.js"></script>
+<script src="../js/plan.js"></script>
+<script src="../js/site.js"></script>
+<script src="../js/views.js"></script>
+<script>
+(function () {
+  const H3 = window.H3, S = H3.site;
+  const rows = H3.views.auditWindows();
+  const errs = S.check();
+
+  let h = '<table><thead><tr>'
+    + '<th>#</th><th>朝向</th><th>方位角</th><th>窗宽</th><th>窗台</th><th>窗顶</th>'
+    + '<th>窗中心 X / Z（户内）</th><th>窗外应看到</th></tr></thead><tbody>';
+
+  rows.forEach((r, i) => {
+    const cls = r.facing === '南' ? 'hl' : '';
+    const tag = r.facing === '南' ? 's' : (r.facing === '北' ? 'n2' : 'w');
+    h += '<tr class="' + cls + '"><td class="n">' + (i + 1) + '</td>'
+      + '<td><span class="tag ' + tag + '">' + r.facing + '</span></td>'
+      + '<td class="n">' + r.bearing + '°</td>'
+      + '<td class="n">' + r.w + '</td>'
+      + '<td class="n">' + r.sill.toFixed(2) + ' <span class="tag ' + tag + '">'
+      + H3.views.sillClass(r.sill) + '</span></td>'
+      + '<td class="n">' + r.top.toFixed(2) + '</td>'
+      + '<td class="n">' + r.x.toFixed(2) + ' / ' + r.z.toFixed(2) + '</td>'
+      + '<td>' + r.view + '</td></tr>';
+  });
+  h += '</tbody></table>';
+
+  h += '<p style="margin-top:16px;font-size:12px;color:#6b6a62">'
+    + '共 ' + rows.length + ' 扇采光窗（已排除阳台栏板）；'
+    + '南向 <b>' + rows.filter(r => r.facing === '南').length + '</b> 扇，'
+    + '北向 <b>' + rows.filter(r => r.facing === '北').length + '</b> 扇，'
+    + '侧向 <b>' + rows.filter(r => r.facing !== '南' && r.facing !== '北').length + '</b> 扇。'
+    + '</p>';
+
+  h += '<p style="font-size:12px">数据自检：'
+    + (errs.length ? '<span id="err">' + errs.join('；') + '</span>' : '✅ ALL PASS（' + errs.length + ' 个错误）')
+    + '　｜　视线绝对标高 ' + S.eyeAbs.toFixed(1) + ' m，高出湖面 '
+    + (S.eyeAbs - S.lakeAbs).toFixed(1) + ' m</p>';
+
+  document.getElementById('out').innerHTML = h;
+  window.__auditReady = true;
+})();
+</script>
+</body>
+</html>
