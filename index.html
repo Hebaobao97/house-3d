@@ -109,6 +109,7 @@
     <button data-view="bldg" class="city">7 号楼</button>
     <button data-view="tower" id="btnTower">整栋 55F</button>
     <button data-view="floor">本层 29F</button>
+    <button data-view="around" class="accent">人物环视</button>
     <span class="sep"></span>
     <button data-view="outside:living-s" class="accent view-out">客厅窗景</button>
     <button data-view="outside:bed2" class="view-out">主卧窗景</button>
@@ -121,7 +122,7 @@
   </nav>
 
   <div class="hint">
-    <kbd>左键</kbd> 旋转 &nbsp;·&nbsp; <kbd>滚轮</kbd> 缩放 &nbsp;·&nbsp; <kbd>右键</kbd> 平移 &nbsp;·&nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 视角 &nbsp;·&nbsp; <kbd>7</kbd> 小区 <kbd>8</kbd> 窗外景
+    <kbd>左键</kbd> 旋转 &nbsp;·&nbsp; <kbd>滚轮</kbd> 缩放 &nbsp;·&nbsp; <kbd>右键</kbd> 平移 &nbsp;·&nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 视角 &nbsp;·&nbsp; <kbd>7</kbd> 小区 <kbd>8</kbd> 窗外景 &nbsp;·&nbsp; <kbd>V</kbd> 漫游时绕人转
   </div>
 
   <!-- 窗外景：能见度切换（真实大气对 29F 远景影响极大） -->
@@ -141,7 +142,7 @@
     <div class="fl-foot"><span class="k me"></span>本户 29F<span class="k up"></span>楼上<span class="k dn"></span>楼下</div>
   </aside>
 
-  <div id="walkTip"><b>W A S D</b> 移动 &nbsp;·&nbsp; <b>鼠标</b> 或 <b>← →</b> 转头 &nbsp;<span class="drag-hint">（按住左键拖动）</span>&nbsp;·&nbsp; <b>7</b> 客厅窗 &nbsp;<b>8</b> 主卧窗 &nbsp;<b>9</b> 连廊窗 &nbsp;<b>Q</b> 餐厅窗 &nbsp;·&nbsp; <b>ESC</b> 退出</div>
+  <div id="walkTip"><b>W A S D</b> 移动 &nbsp;·&nbsp; <b>鼠标</b> 或 <b>← →</b> 转头 &nbsp;<span class="drag-hint">（按住左键拖动）</span>&nbsp;·&nbsp; <b>7</b> 客厅窗 &nbsp;<b>8</b> 主卧窗 &nbsp;<b>9</b> 连廊窗 &nbsp;<b>Q</b> 餐厅窗 &nbsp;·&nbsp; <b>V</b> 绕人转 &nbsp;·&nbsp; <b>ESC</b> 退出</div>
 
   <div id="loading"><div class="spin"></div><p>正在构建三维户型…</p></div>
 </div>
@@ -150,6 +151,7 @@
 <script src="lib/OrbitControls.js"></script>
 <script src="js/materials.js"></script>
 <script src="js/furniture.js"></script>
+<script src="js/avatar.js"></script>
 <script src="js/plan.js"></script>
 <script src="js/site.js"></script>
 <script src="js/community.js"></script>
